@@ -142,6 +142,7 @@ class SinglyLinkedList {
 
         preNode.next = newNode;
         newNode.next = node;
+        this.length++;
         return true;
     }
 
