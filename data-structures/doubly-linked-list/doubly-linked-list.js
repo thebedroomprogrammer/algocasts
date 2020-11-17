@@ -33,16 +33,21 @@ class DoublyLinkedList {
         if (this.length === 0) {
             return null;
         }
-        this.length--;
+       
+        var removedNode = this.tail;
         if (this.length === 1) {
             this.head = null
             this.tail = null
-            return this.head;
+            this.length--;
+
+            return removedNode;
         } else {
-            var removedNode = this.tail;
+           
             this.tail = this.tail.previous;
             this.tail.next = null;
             removedNode.previous = null;
+            this.length--;
+
             return removedNode;
 
         }
