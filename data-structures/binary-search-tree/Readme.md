@@ -47,12 +47,14 @@ POSTORDER TRAVERSAL - 1,6,5,14,16,15,10,31,36,35,42,50,45,40,30
 * **_Deletion_**: For deletion of element 1, we have to traverse all elements to find 1 (in order 3, 2, 1). Therefore, deletion in binary tree has worst case complexity of **O(n)**. In general, time complexity is **O(h)**.
 
 ## Notes
+* Each node can have atmost 2 children.
 * Max nodes at any level i is 2^i
 * For root height and depth is same.
 * In a perfect bst for height h, 2^0+2^1...+2^h = 2^(h+1) - 1
 * Height of a perfect bst n = 2^(h+1) - 1, h = log (n+1) or |_logn_|
 * Height of empty tree is -1
-* Balance binary tree is balanced if |lHeight - rHeight| < 1
+* Balance binary tree is balanced if |lHeight - rHeight| <= 1
 * Binary Trees can be implmented using Dynamic linked nodes or arrays.
 * For arrays the if node is at index i then left child would be at 2i+1 and right child would be at 2i+2 (Arrays are used to implment heaps) in a complete binary tree.
+* Tree with N nodes there would be exactly N-1 edges.
 
