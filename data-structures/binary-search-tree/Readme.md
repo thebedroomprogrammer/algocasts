@@ -1,5 +1,9 @@
 # **Binary Search Tree**
 
+## Written in:
+* JavaScript
+* Golang
+
 ## Resources:
 * [Geeks for geeks](https://www.geeksforgeeks.org/binary-tree-data-structure/) 
 * [Mycodeschool](https://www.youtube.com/watch?v=H5JubkIy_p8&list=PL2_aWCzGMAwI3W_JlcBbtYTwiQSsOTa6P&index=26) 
@@ -39,6 +43,6 @@ POSTORDER TRAVERSAL - 1,6,5,14,16,15,10,31,36,35,42,50,45,40,30
 
 ## Time Complexity
 
-* _Searching_: For searching element 1, we have to traverse all elements (in order 3, 2, 1). Therefore, searching in binary search tree has worst case complexity of **O(n)**. In general, time complexity is **O(h)** where h is height of BST.
+* **_Searching_**: For searching element 1, we have to traverse all elements (in order 3, 2, 1). Therefore, searching in binary search tree has worst case complexity of **O(n)**. In general, time complexity is **O(h)** where h is height of BST.
 * **_Insertion_**: For inserting element 0, it must be inserted as left child of 1. Therefore, we need to traverse all elements (in order 3, 2, 1) to insert 0 which has worst case complexity of **O(n)**. In general, time complexity is **O(h)**.
 * **_Deletion_**: For deletion of element 1, we have to traverse all elements to find 1 (in order 3, 2, 1). Therefore, deletion in binary tree has worst case complexity of **O(n)**. In general, time complexity is **O(h)**.
