@@ -44,30 +44,76 @@ class Queue {
 
 }
 
-/*
-                    30
-                   /  \
-                  /    \
-                 /      \
-                10      40
-               /  \    /  \
-              /   \   /   \
-             5   15   35   45
-           / \  / \  /  \  / \
-          1  6 14 16 31 36 42 50
 
-*/
-
-//LEVEL ORDER TRAVERSAL - 30,10,40,5,15,35,45,1,6,14,16,31,36,42,50
-//PREORDER TRAVERSAL - 30,10,5,1,6,15,14,16,40,35,31,36,45,42,50
-//INORDER TRAVERSAL - 1,5,6,10,14,15,16,30,31,35,36,40,42,45,50
-//POSTORDER TRAVERSAL - 1,6,5,14,16,15,10,31,36,35,42,50,45,40,30
 
 class BinarySearchTree {
     constructor() {
         this.root = null;
     }
 
+    delete(value, current=this.root) {
+        if (current === null) {
+            return current;
+        } else if (value < current.value) {
+            current.left = this.delete(value, current.left)
+        } else if (value > current.value) {
+            current.right = this.delete(value, current.right)
+
+        } else {
+            if (current.left === null && current.right === null) {
+                current = null
+            } else if (current.left === null) {
+                current = current.right;
+
+            } else if (current.right === null) {
+                current = current.left;
+            } else {
+                var minRight = this.min(current.right);
+                current.value = minRight.value;
+                current.right = this.delete(minRight.value, current.right)
+
+            }
+
+        }
+        return current;
+
+    }
+
+    isBst(current=this.root, min=-Infinity, max=Infinity) {
+        if (current === null) {
+            return true;
+        }
+
+        if (current.value >= min && current.value < max && this.isBst(current.left, min, current.value) && this.isBst(current.right, current.value, max)) {
+            return true;
+        }
+        return false;
+    }
+
+    inOrderSuccessor(value) {
+        var nodeFound = this.find(value);
+        if (nodeFound === null) {
+            return nodeFound;
+        }
+        if (nodeFound.right !== null) {
+            var minRight = this.min(nodeFound.right);
+            return minRight;
+        } else {
+            var successor = null;
+            var ancestor = this.root;
+            while (ancestor.value !== nodeFound.value) {
+                if (ancestor.value > nodeFound.value) {
+                    successor = ancestor;
+                    ancestor = ancestor.left
+                } else {
+                    ancestor = ancestor.right
+                }
+
+            }
+            return successor;
+        }
+
+    }
     preOrderTraversal(current=this.root) {
         if (current === null) {
             return;
@@ -128,30 +174,30 @@ class BinarySearchTree {
         return Math.max(leftHeight, rightHeight) + 1
     }
 
-    get min() {
-        if (this.root === null) {
+    min(root=this.root) {
+        if (root === null) {
             return false
         }
-        ;var current = this.root;
+        ;var current = root;
 
         while (current.left !== null) {
             current = current.left
         }
 
-        return current.value;
+        return current;
     }
 
-    get max() {
-        if (this.root === null) {
+    max(root=this.root) {
+        if (root === null) {
             return false
         }
-        ;var current = this.root;
+        ;var current = root;
 
         while (current.right !== null) {
             current = current.right
         }
 
-        return current.value;
+        return current;
     }
 
     search(value) {
@@ -175,6 +221,29 @@ class BinarySearchTree {
                 }
             }
             return found;
+        }
+    }
+
+    find(value) {
+        if (this.root === null) {
+            return null;
+        } else {
+            var current = this.root;
+            var found = false;
+            while (current !== null && !found) {
+                if (value === current.value) {
+                    found = true
+                    return current;
+                } else if (value <= current.value) {
+                    console.log("left");
+                    current = current.left
+                } else {
+                    console.log("right");
+
+                    current = current.right;
+                }
+            }
+            return current;
         }
     }
     insert(value) {
@@ -235,4 +304,3 @@ bst.insert(31)
 bst.insert(36)
 bst.insert(42)
 bst.insert(50)
-
