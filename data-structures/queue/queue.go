@@ -13,6 +13,13 @@ type Queue struct {
 	size  int32
 }
 
+func (queue *Queue) empty() bool {
+	if queue.size == 0 {
+		return true
+	}
+	return false
+}
+
 //pushes value at the end of the linked list
 func (ll *Queue) enqueue(value int32) {
 	node := Node{value, nil}

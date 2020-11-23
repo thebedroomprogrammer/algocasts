@@ -1,10 +1,10 @@
 # **Binary Search Tree**
 
-## Written in:
+## Written in
 * JavaScript
 * Golang
 
-## Resources:
+## Resources
 * [Geeks for geeks](https://www.geeksforgeeks.org/binary-tree-data-structure/) 
 * [Mycodeschool](https://www.youtube.com/watch?v=H5JubkIy_p8&list=PL2_aWCzGMAwI3W_JlcBbtYTwiQSsOTa6P&index=26) 
 
@@ -55,6 +55,6 @@ POSTORDER TRAVERSAL - 1,6,5,14,16,15,10,31,36,35,42,50,45,40,30
 * Height of empty tree is -1
 * Balance binary tree is balanced if |lHeight - rHeight| <= 1
 * Binary Trees can be implmented using Dynamic linked nodes or arrays.
-* For arrays the if node is at index i then left child would be at 2i+1 and right child would be at 2i+2 (Arrays are used to implment heaps) in a complete binary tree.
+* For arrays if a node is at index i then left child would be at 2i+1 and right child would be at 2i+2 (Arrays are used to implment heaps) in a complete binary tree.
 * Tree with N nodes there would be exactly N-1 edges.
 

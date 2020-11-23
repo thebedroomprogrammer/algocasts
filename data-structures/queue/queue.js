@@ -12,6 +12,10 @@ class Queue {
         this.size = 0;
     }
 
+    empty() {
+        return !Boolean(this.size);
+    }
+
     enqueue(value) {
         var node = new Node(value);
         if (!this.first) {

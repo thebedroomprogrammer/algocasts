@@ -31,60 +31,56 @@ class Queue {
     dequeue() {
         var currentfirst = this.first;
         if (!currentfirst) {
-            return null
+            return null;
         }
         this.size--;
         this.first = this.first.next;
         if (this.size === 0) {
-
             this.last = null;
         }
         return currentfirst.value;
     }
-
 }
-
-
 
 class BinarySearchTree {
     constructor() {
         this.root = null;
     }
 
-    delete(value, current=this.root) {
+    delete(value, current = this.root) {
         if (current === null) {
             return current;
         } else if (value < current.value) {
-            current.left = this.delete(value, current.left)
+            current.left = this.delete(value, current.left);
         } else if (value > current.value) {
-            current.right = this.delete(value, current.right)
-
+            current.right = this.delete(value, current.right);
         } else {
             if (current.left === null && current.right === null) {
-                current = null
+                current = null;
             } else if (current.left === null) {
                 current = current.right;
-
             } else if (current.right === null) {
                 current = current.left;
             } else {
                 var minRight = this.min(current.right);
                 current.value = minRight.value;
-                current.right = this.delete(minRight.value, current.right)
-
+                current.right = this.delete(minRight.value, current.right);
             }
-
         }
         return current;
-
     }
 
-    isBst(current=this.root, min=-Infinity, max=Infinity) {
+    isBst(current = this.root, min = -Infinity, max = Infinity) {
         if (current === null) {
             return true;
         }
 
-        if (current.value >= min && current.value < max && this.isBst(current.left, min, current.value) && this.isBst(current.right, current.value, max)) {
+        if (
+            current.value >= min &&
+            current.value < max &&
+            this.isBst(current.left, min, current.value) &&
+            this.isBst(current.right, current.value, max)
+        ) {
             return true;
         }
         return false;
@@ -104,17 +100,15 @@ class BinarySearchTree {
             while (ancestor.value !== nodeFound.value) {
                 if (ancestor.value > nodeFound.value) {
                     successor = ancestor;
-                    ancestor = ancestor.left
+                    ancestor = ancestor.left;
                 } else {
-                    ancestor = ancestor.right
+                    ancestor = ancestor.right;
                 }
-
             }
             return successor;
         }
-
     }
-    preOrderTraversal(current=this.root) {
+    preOrderTraversal(current = this.root) {
         if (current === null) {
             return;
         }
@@ -124,7 +118,7 @@ class BinarySearchTree {
         this.preOrderTraversal(current.right);
     }
 
-    inOrderTraversal(current=this.root) {
+    inOrderTraversal(current = this.root) {
         if (current === null) {
             return;
         }
@@ -134,7 +128,7 @@ class BinarySearchTree {
         this.inOrderTraversal(current.right);
     }
 
-    postOrderTraversal(current=this.root) {
+    postOrderTraversal(current = this.root) {
         if (current === null) {
             return;
         }
@@ -156,72 +150,54 @@ class BinarySearchTree {
             var node = queue.dequeue();
             console.log(node.value);
             if (node.left !== null) {
-                queue.enqueue(node.left)
+                queue.enqueue(node.left);
             }
             if (node.right !== null) {
-                queue.enqueue(node.right)
+                queue.enqueue(node.right);
             }
         }
-
     }
 
-    height(current=this.root) {
+    height(current = this.root) {
         if (current === null) {
             return -1;
         }
         var leftHeight = this.height(current.left);
         var rightHeight = this.height(current.right);
-        return Math.max(leftHeight, rightHeight) + 1
+        return Math.max(leftHeight, rightHeight) + 1;
     }
 
-    min(root=this.root) {
+    min(root = this.root) {
         if (root === null) {
-            return false
+            return false;
         }
-        ;var current = root;
+        var current = root;
 
         while (current.left !== null) {
-            current = current.left
+            current = current.left;
         }
 
         return current;
     }
 
-    max(root=this.root) {
+    max(root = this.root) {
         if (root === null) {
-            return false
+            return false;
         }
-        ;var current = root;
+        var current = root;
 
         while (current.right !== null) {
-            current = current.right
+            current = current.right;
         }
 
         return current;
     }
 
     search(value) {
-        if (this.root === null) {
-            return false;
-        } else {
-            var current = this.root;
-            var found = false;
-            while (current !== null && !found) {
-                if (value === current.value) {
-                    console.log("found");
-
-                    found = true;
-                } else if (value <= current.value) {
-                    console.log("left");
-                    current = current.left
-                } else {
-                    console.log("right");
-
-                    current = current.right;
-                }
-            }
-            return found;
+        if (this.find(value)) {
+            return true;
         }
+        return false;
     }
 
     find(value) {
@@ -232,11 +208,11 @@ class BinarySearchTree {
             var found = false;
             while (current !== null && !found) {
                 if (value === current.value) {
-                    found = true
+                    found = true;
                     return current;
                 } else if (value <= current.value) {
                     console.log("left");
-                    current = current.left
+                    current = current.left;
                 } else {
                     console.log("right");
 
@@ -259,25 +235,22 @@ class BinarySearchTree {
                     if (current.left === null) {
                         var node = new Node(value);
                         current.left = node;
-                        return this
+                        return this;
                     } else {
                         current = current.left;
                     }
-
                 } else {
                     if (current.right === null) {
                         var node = new Node(value);
                         current.right = node;
-                        return this
+                        return this;
                     } else {
                         current = current.right;
                     }
                 }
             }
         }
-
     }
-
 }
 
 class Node {
@@ -289,18 +262,18 @@ class Node {
 }
 
 var bst = new BinarySearchTree();
-bst.insert(30)
-bst.insert(10)
-bst.insert(40)
-bst.insert(5)
-bst.insert(15)
-bst.insert(35)
-bst.insert(45)
-bst.insert(1)
-bst.insert(6)
-bst.insert(14)
-bst.insert(16)
-bst.insert(31)
-bst.insert(36)
-bst.insert(42)
-bst.insert(50)
+bst.insert(30);
+bst.insert(10);
+bst.insert(40);
+bst.insert(5);
+bst.insert(15);
+bst.insert(35);
+bst.insert(45);
+bst.insert(1);
+bst.insert(6);
+bst.insert(14);
+bst.insert(16);
+bst.insert(31);
+bst.insert(36);
+bst.insert(42);
+bst.insert(50);
