@@ -33,6 +33,7 @@ ARRAY REPRESENTATION : [100,80,9040,50,60,70,35,30,25,20,15,10,5,0] which is the
 * A Binary Heap is a Complete Binary Tree. A binary heap is typically represented as an array.
 * The root element will be at Arr[0].
 * Below table shows indexes of other nodes for the ith node, i.e., Arr[i]:
+
 | Index        | Description                  |
 | ------------ | ---------------------------- |
 | Arr[(i-1)/2] | Returns the parent node      |
