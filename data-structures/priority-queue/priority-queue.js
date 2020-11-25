@@ -1,10 +1,18 @@
-class MaxBinaryHeap {
+class Node{
+    constructor(value,priority){
+        this.value = value;
+        this.priority = priority;
+    }
+}
+
+class PriorityQueue {
     constructor() {
         this.values = []
     }
 
-    insert(value) {
-        this.values.push(value)
+    enqueue(value,priority) {
+        var node = new Node(value,priority)
+        this.values.push(node)
         this.bubbleUp()
 
     }
@@ -16,7 +24,7 @@ class MaxBinaryHeap {
         while (idx > 0) {
             var parentIdx = Math.floor((idx - 1) / 2);
             var parent = this.values[parentIdx];
-            if (element <= parent)
+            if (element.priority >= parent.priority)
                 break;
 
             this.values[parentIdx] = element;
@@ -27,7 +35,7 @@ class MaxBinaryHeap {
 
     }
 
-    extractMax() {
+    dequeue() {
         var root = this.values[0];
         var end = this.values.pop();
         if (this.values.length > 0) {
@@ -49,13 +57,13 @@ class MaxBinaryHeap {
 
             if (leftIdx < this.values.length) {
                 leftChild = this.values[leftIdx];
-                if (leftChild > parent) {
+                if (leftChild.priority < parent.priority) {
                     swapIdx = leftIdx;
                 }
             }
             if (rightIdx < this.values.length) {
                 rightChild = this.values[rightIdx];
-                if ((swapIdx === null && rightChild > parent) || (swapIdx !== null && rightChild > leftChild)) {
+                if ((swapIdx === null && rightChild.priority < parent.priority) || (swapIdx !== null && rightChild.priority < leftChild.priority)) {
                     swapIdx = rightIdx
                 }
             }
@@ -70,44 +78,14 @@ class MaxBinaryHeap {
         }
     }
 
-    deleteKey(index) {
-        if (index > this.values.length) {
-            return null;
-        }
-        var elementToBeDeleted = this.values[index];
-        this.values[index] = Infinity;
-        var idx = index;
-        var element = this.values[idx];
-
-        while (idx !== 0) {
-            var parentIdx = Math.floor((idx - 1) / 2);
-            console.log(parentIdx);
-            var parent = this.values[parentIdx];
-
-            this.values[parentIdx] = element;
-            this.values[idx] = parent;
-            idx = parentIdx;
-        }
-        this.extractMax();
-        return elementToBeDeleted;
-
-    }
-
 }
 
-var heap = new MaxBinaryHeap();
-heap.insert(87)
-heap.insert(72)
-heap.insert(70)
-heap.insert(55)
-heap.insert(58)
-heap.insert(47)
-heap.insert(42)
-heap.insert(35)
-heap.insert(34)
-heap.insert(26)
-heap.insert(25)
-heap.insert(38)
-heap.insert(39)
-heap.extractMax();
-console.log(heap.values);
+var queue = new PriorityQueue();
+queue.enqueue("Work",5)
+queue.enqueue("Wake up",1)
+queue.enqueue("Eat",4)
+queue.enqueue("Brush teeth",2)
+queue.enqueue("Make Breakfast",3)
+
+
+
