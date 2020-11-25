@@ -20,10 +20,14 @@ ARRAY REPRESENTATION : [87,72,70,55,58,47,42,35,34,26,25,38,39] which is the LEV
 ```
 
 ## Operations
-
+* Insert
+* Delete Key
+* Extract Max
 
 ## Time Complexity
-
+* **_Insert_**: Inserting a new key takes **O(Logn)** time. We add a new key at the end of the tree. IF new key is greater than its parent, then we don’t need to do anything. Otherwise, we need to traverse up to fix the violated heap property.
+* **_Extract Max_**: Time Complexity of this Operation is **O(Logn)**
+* **_Delete_**: Deleting a key also takes **O(Logn)** time.
 
 ## Notes
 * Similar to bst but has different rules.
