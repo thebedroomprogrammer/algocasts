@@ -8,15 +8,15 @@
 * [Geeks for geeks](https://www.geeksforgeeks.org/binary-heap/) 
 
 ```
-                        100
+                        87
                 +----------------+
-               80                90
+               72                70
           +---------+        +--------+ 
-         40          50      60        70
-       +---+       +---+   +---+     +---+
-      35   30     25   20 15   10   5    0
+         55          58      47        42
+       +---+       +---+   +---+     
+      35   34     26   25 38   39   
 
-ARRAY REPRESENTATION : [100,80,9040,50,60,70,35,30,25,20,15,10,5,0] which is the LEVEL ORDER TRAVERSAL
+ARRAY REPRESENTATION : [87,72,70,55,58,47,42,35,34,26,25,38,39] which is the LEVEL ORDER TRAVERSAL
 ```
 
 ## Operations
