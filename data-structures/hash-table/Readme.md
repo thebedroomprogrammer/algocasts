@@ -17,7 +17,7 @@
 
 ## Time Complexity
 * **_Insert_**: **O(1)** 
-* **Access_**: **O(1)**
+* **_Access_**: **O(1)**
 * **_Delete_**: **O(1)**
 
 ## Notes
