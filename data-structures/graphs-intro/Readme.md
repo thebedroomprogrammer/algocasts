@@ -18,15 +18,15 @@ A Graph consists of a finite set of vertices(or nodes) and set of Edges which co
 * Remove Edge
 
 ## Time Complexity
-![Time complexity graph](https://imgur.com/ZMKh4Au)
+![Time complexity graph](https://i.imgur.com/ZMKh4Au.png)
 
 ## Notes
-![Graph Terms](https://imgur.com/G7NVbK3)
-![Undirected Graph](https://imgur.com/PG63x9W)
-![Directed Graph](https://imgur.com/oELwX8H)
-![Weighted Graph](https://imgur.com/pFNPMm5)
-![Adjacency Matrix](https://imgur.com/XLT01qj)
-![Adjacency List](https://imgur.com/U1zCo9C)
-![Adjacency List](https://imgur.com/TjAp5OO)
-![Comparison](https://imgur.com/WVerQ1F)
+![Graph Terms](https://i.imgur.com/G7NVbK3.png)
+![Undirected Graph](https://i.imgur.com/PG63x9W.png)
+![Directed Graph](https://i.imgur.com/oELwX8H.png)
+![Weighted Graph](https://i.imgur.com/pFNPMm5.png)
+![Adjacency Matrix](https://i.imgur.com/XLT01qj.png)
+![Adjacency List](https://i.imgur.com/U1zCo9C.png)
+![Adjacency List](https://i.imgur.com/TjAp5OO.png)
+![Comparison](https://i.imgur.com/WVerQ1F.png)
 
