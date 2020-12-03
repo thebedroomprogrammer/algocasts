@@ -7,6 +7,8 @@
 */
 package main
 
+import "fmt"
+
 type Vertex struct {
 	value interface{}
 }
@@ -54,6 +56,69 @@ func (g *Graph) removeEdge(v1 *Vertex, v2 *Vertex) {
 
 }
 
+func (g *Graph) depthFirstRecursive(vertex *Vertex) []Vertex {
+	var result []Vertex
+	visited := map[*Vertex]bool{}
+	var dfs func(v *Vertex)
+	dfs = func(v *Vertex) {
+		if v == nil {
+			return
+		}
+		result = append(result, *v)
+		visited[v] = true
+		for _, neighbour := range g.adjacencyList[v] {
+			if !visited[neighbour] {
+				dfs(neighbour)
+			}
+		}
+
+	}
+
+	dfs(vertex)
+	return result
+}
+
+func (g *Graph) breadthFirst(vertex *Vertex) []Vertex {
+	var result []Vertex
+	visited := map[*Vertex]bool{}
+	queue := []*Vertex{vertex}
+	visited[vertex] = true
+	for len(queue) > 0 {
+		dequedVertex := queue[0]
+		result = append(result, *dequedVertex)
+		queue = queue[1:]
+		for _, neighbour := range g.adjacencyList[dequedVertex] {
+
+			if !visited[neighbour] {
+				visited[neighbour] = true
+				queue = append(queue, neighbour)
+			}
+		}
+	}
+	return result
+}
+
+func (g *Graph) depthFirstIterative(vertex *Vertex) []Vertex {
+	var result []Vertex
+	visited := map[*Vertex]bool{}
+	stack := []*Vertex{vertex}
+	visited[vertex] = true
+	for len(stack) > 0 {
+		poppedVertex := stack[len(stack)-1]
+		result = append(result, *poppedVertex)
+		stack = stack[:len(stack)-1]
+		for _, neighbour := range g.adjacencyList[poppedVertex] {
+
+			if !visited[neighbour] {
+				visited[neighbour] = true
+				stack = append(stack, neighbour)
+			}
+		}
+	}
+
+	return result
+}
+
 func main() {
 	vA := Vertex{"A"}
 	vB := Vertex{"B"}
@@ -76,5 +141,5 @@ func main() {
 	g.addEdge(&vD, &vE)
 	g.addEdge(&vD, &vF)
 	g.addEdge(&vE, &vF)
-
+	fmt.Println(g.breadthFirst(&vA))
 }
