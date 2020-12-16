@@ -42,89 +42,101 @@ class Queue {
     }
 }
 
-class Node {
-    constructor(value) {
-        this.value = value;
-        this.left = null;
-        this.right = null;
-    }
-}
-
-class AVLTree {
+class BinarySearchTree {
     constructor() {
         this.root = null;
     }
 
-    getBalanceFactor(current=this.root) {
-        return this.height(current.left) - this.height(current.right);
-    }
-
-    height(current=this.root) {
-        let height = 0
+    delete(value, current = this.root) {
         if (current === null) {
-            height = -1;
+            return current;
+        } else if (value < current.value) {
+            current.left = this.delete(value, current.left);
+        } else if (value > current.value) {
+            current.right = this.delete(value, current.right);
         } else {
-            var leftHeight = this.height(current.left);
-            var rightHeight = this.height(current.right);
-            height = Math.max(leftHeight, rightHeight) + 1;
-        }
-
-        return height;
-
-    }
-
-    rotateRight(current) {
-        const pivot = current.left;
-        const tmp = pivot.right;
-        pivot.right = current;
-        current.left = tmp;
-        return pivot
-
-    }
-
-    rotateLeft(current) {
-        const pivot = current.right;
-        const tmp = pivot.left;
-        pivot.left = current;
-        current.right = tmp
-        return pivot;
-    }
-
-    insertHelper(current, node) {
-        if (current === null) {
-            current = node
-        } else if (node.value <= current.value) {
-            current.left = this.insertHelper(current.left, node)
-            if (current.left !== null && this.getBalanceFactor(current) > 1) {
-                if (node.value > current.left.value) {
-                    current = this.rotateRight(current);
-                    current = this.rotateLeft(current);
-                } else {
-                    current = this.rotateRight(current)
-                }
+            if (current.left === null && current.right === null) {
+                current = null;
+            } else if (current.left === null) {
+                current = current.right;
+            } else if (current.right === null) {
+                current = current.left;
+            } else {
+                var minRight = this.min(current.right);
+                current.value = minRight.value;
+                current.right = this.delete(minRight.value, current.right);
             }
-        } else if (node.value > current.value) {
-
-            current.right = this.insertHelper(current.right, node);
-            if (current.right !== null && this.getBalanceFactor(current) > 1) {
-                if (node.value > current.right.value) {
-                    current = this.rotateLeft(current);
-                } else {
-                    current = this.rotateLeft(current)
-                    current = this.rotateRight(current)
-
-                }
-            }
-
         }
-
         return current;
     }
 
-    insert(value) {
-        const node = new Node(value);
-        this.root = this.insertHelper(this.root, node)
+    isBst(current = this.root, min = -Infinity, max = Infinity) {
+        if (current === null) {
+            return true;
+        }
 
+        if (
+            current.value >= min &&
+            current.value < max &&
+            this.isBst(current.left, min, current.value) &&
+            this.isBst(current.right, current.value, max)
+        ) {
+            return true;
+        }
+        return false;
+    }
+
+    inOrderSuccessor(value) {
+        var nodeFound = this.find(value);
+        if (nodeFound === null) {
+            return nodeFound;
+        }
+        if (nodeFound.right !== null) {
+            var minRight = this.min(nodeFound.right);
+            return minRight;
+        } else {
+            var successor = null;
+            var ancestor = this.root;
+            while (ancestor.value !== nodeFound.value) {
+                if (ancestor.value > nodeFound.value) {
+                    successor = ancestor;
+                    ancestor = ancestor.left;
+                } else {
+                    ancestor = ancestor.right;
+                }
+            }
+            return successor;
+        }
+    }
+    preOrderTraversal(current = this.root) {
+        if (current === null) {
+            return;
+        }
+
+        console.log(current.value);
+        this.preOrderTraversal(current.left);
+        this.preOrderTraversal(current.right);
+    }
+
+    inOrderTraversal(current = this.root) {
+        if (current === null) {
+            return;
+        }
+
+        this.inOrderTraversal(current.left);
+        console.log(current.value);
+        this.inOrderTraversal(current.right);
+    }
+
+    postOrderTraversal(current = this.root) {
+        if (current === null) {
+            return;
+        }
+
+        this.postOrderTraversal(current.left);
+
+        this.postOrderTraversal(current.right);
+        console.log(current.value);
     }
 
     levelOrderTraversal() {
@@ -146,10 +158,20 @@ class AVLTree {
         }
     }
 
-    min(current=this.root) {
+    height(current = this.root) {
         if (current === null) {
+            return -1;
+        }
+        var leftHeight = this.height(current.left);
+        var rightHeight = this.height(current.right);
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
+    min(root = this.root) {
+        if (root === null) {
             return false;
         }
+        var current = root;
 
         while (current.left !== null) {
             current = current.left;
@@ -158,68 +180,103 @@ class AVLTree {
         return current;
     }
 
+    max(root = this.root) {
+        if (root === null) {
+            return false;
+        }
+        var current = root;
 
-    delete(value, current=this.root) {
-        this.root = this.deleteHelper(value, current);
-    }
-    
-    deleteHelper(value, current) {
-        if (current === null) {
-            return current
-        } else if (value < current.value) {
-            current.left = this.deleteHelper(value, current.left)
-
-        } else if (value > current.value) {
-            current.right = this.deleteHelper(value, current.right)
-
-        } else {
-            if (current.left === null && current.right === null) {
-                current = null;
-            } else if (current.left === null) {
-                current = current.right;
-            } else if (current.right === null) {
-                current = current.left
-            } else {
-
-                const minRight = this.min(current.right);
-                current.value = minRight.value;
-                current.right = this.deleteHelper(minRight.value, current.right);
-
-            }
+        while (current.right !== null) {
+            current = current.right;
         }
 
-        if (current) {
-            const balanceFactor = this.getBalanceFactor(current);
-           
-            if (balanceFactor > 1 && this.getBalanceFactor(current.left) >= 0) {
-                current = this.rotateRight(current)
-            }
-            if (balanceFactor > 1 && this.getBalanceFactor(current.left) < 0) {
-                current = this.rotateRight(current)
-                current = this.rotateLeft(current)
-
-            }
-
-            if (balanceFactor < -1 && this.getBalanceFactor(current.right) <= 0) {
-                current = this.rotateLeft(current)
-            }
-            if (balanceFactor < -1 && this.getBalanceFactor(current.right) > 0) {
-                current = this.rotateLeft(current)
-                current = this.rotateRight(current)
-            }
-        }
         return current;
     }
 
+    search(value) {
+        if (this.find(value)) {
+            return true;
+        }
+        return false;
+    }
+
+    find(value) {
+        if (this.root === null) {
+            return null;
+        } else {
+            var current = this.root;
+            var found = false;
+            while (current !== null && !found) {
+                if (value === current.value) {
+                    found = true;
+                    return current;
+                } else if (value <= current.value) {
+                    console.log("left");
+                    current = current.left;
+                } else {
+                    console.log("right");
+
+                    current = current.right;
+                }
+            }
+            return current;
+        }
+    }
+    insert(value) {
+        //no root
+        if (this.root === null) {
+            var node = new Node(value);
+            this.root = node;
+            return this;
+        } else {
+            var current = this.root;
+            while (true) {
+                if (value <= current.value) {
+                    if (current.left === null) {
+                        var node = new Node(value);
+                        current.left = node;
+                        return this;
+                    } else {
+                        current = current.left;
+                    }
+                } else {
+                    if (current.right === null) {
+                        var node = new Node(value);
+                        current.right = node;
+                        return this;
+                    } else {
+                        current = current.right;
+                    }
+                }
+            }
+        }
+    }
 }
 
-var avl = new AVLTree();
-avl.insert(20)
-avl.insert(10)
-avl.insert(30)
-avl.insert(5)
-avl.insert(12)
-avl.insert(25)
-avl.insert(35)
-avl.insert(40)
+class Node {
+    constructor(value) {
+        this.value = value;
+        this.left = null;
+        this.right = null;
+    }
+}
+
+var bst = new BinarySearchTree();
+bst.insert(30);
+bst.insert(10);
+bst.insert(40);
+bst.insert(5);
+bst.insert(15);
+bst.insert(35);
+bst.insert(45);
+bst.insert(1);
+bst.insert(6);
+bst.insert(14);
+bst.insert(16);
+bst.insert(31);
+bst.insert(36);
+bst.insert(42);
+bst.insert(50);
+
+
 

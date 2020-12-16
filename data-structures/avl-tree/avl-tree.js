@@ -162,6 +162,7 @@ class AVLTree {
     delete(value, current=this.root) {
         this.root = this.deleteHelper(value, current);
     }
+    
     deleteHelper(value, current) {
         if (current === null) {
             return current
@@ -180,7 +181,7 @@ class AVLTree {
                 current = current.left
             } else {
 
-                const minRight = this.min(current);
+                const minRight = this.min(current.right);
                 current.value = minRight.value;
                 current.right = this.deleteHelper(minRight.value, current.right);
 
