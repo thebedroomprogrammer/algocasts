@@ -73,44 +73,21 @@ class AVLTree {
 
     }
 
-    rotateLL(current) {
+    rotateRight(current) {
         const pivot = current.left;
-        const parent = current;
-        parent.left = null
-        current = pivot;
-        pivot.right = parent;   
-        return current;
+        const tmp = pivot.right;
+        pivot.right = current;
+        current.left = tmp;
+        return pivot
+
     }
 
-    rotateRR(current) {
+    rotateLeft(current) {
         const pivot = current.right;
-        const parent = current;
-        parent.right = null
-        current = pivot;
-        pivot.left = parent;   
-        return current;
-    }
-
-    rotateLR(current) {
-        const pivot = current.left;
-        const parent = current;
-        parent.left = pivot.right;
-        parent.left.left = pivot;
-        pivot.right =null;
-        current = this.rotateLL(current);
-       return current
-
-    }
-
-    rotateRL(current) {
-         const pivot = current.right;
-        const parent = current;
-        parent.right = pivot.left;
-        parent.right.right = pivot;
-        pivot.right = null;
-        current = this.rotateRR(current)
-        return current;
-       
+        const tmp = pivot.left;
+        pivot.left = current;
+        current.right = tmp
+        return pivot;
     }
 
     insertHelper(current, node) {
@@ -120,20 +97,22 @@ class AVLTree {
             current.left = this.insertHelper(current.left, node)
             if (current.left !== null && this.getBalanceFactor(current) > 1) {
                 if (node.value > current.left.value) {
-                    current = this.rotateLR(current);
-
+                    current = this.rotateRight(current);
+                    current = this.rotateLeft(current);
                 } else {
-                    current = this.rotateLL(current)
+                    current = this.rotateRight(current)
                 }
             }
         } else if (node.value > current.value) {
 
             current.right = this.insertHelper(current.right, node);
-             if (current.right !== null && this.getBalanceFactor(current) > 1) {
+            if (current.right !== null && this.getBalanceFactor(current) > 1) {
                 if (node.value > current.right.value) {
-                    current = this.rotateRR(current);
+                    current = this.rotateLeft(current);
                 } else {
-                    current = this.rotateRL(current)
+                    current = this.rotateLeft(current)
+                    current = this.rotateRight(current)
+
                 }
             }
 
@@ -167,19 +146,79 @@ class AVLTree {
         }
     }
 
+    min(current=this.root) {
+        if (current === null) {
+            return false;
+        }
+
+        while (current.left !== null) {
+            current = current.left;
+        }
+
+        return current;
+    }
+
+
+    delete(value, current=this.root) {
+        this.root = this.deleteHelper(value, current);
+    }
+    deleteHelper(value, current) {
+        if (current === null) {
+            return current
+        } else if (value < current.value) {
+            current.left = this.deleteHelper(value, current.left)
+
+        } else if (value > current.value) {
+            current.right = this.deleteHelper(value, current.right)
+
+        } else {
+            if (current.left === null && current.right === null) {
+                current = null;
+            } else if (current.left === null) {
+                current = current.right;
+            } else if (current.right === null) {
+                current = current.left
+            } else {
+
+                const minRight = this.min(current);
+                current.value = minRight.value;
+                current.right = this.deleteHelper(minRight.value, current.right);
+
+            }
+        }
+
+        if (current) {
+            const balanceFactor = this.getBalanceFactor(current);
+           
+            if (balanceFactor > 1 && this.getBalanceFactor(current.left) >= 0) {
+                current = this.rotateRight(current)
+            }
+            if (balanceFactor > 1 && this.getBalanceFactor(current.left) < 0) {
+                current = this.rotateRight(current)
+                current = this.rotateLeft(current)
+
+            }
+
+            if (balanceFactor < -1 && this.getBalanceFactor(current.right) <= 0) {
+                current = this.rotateLeft(current)
+            }
+            if (balanceFactor < -1 && this.getBalanceFactor(current.right) > 0) {
+                current = this.rotateLeft(current)
+                current = this.rotateRight(current)
+            }
+        }
+        return current;
+    }
+
 }
 
 var avl = new AVLTree();
 avl.insert(20)
-avl.insert(19)
-avl.insert(18)
-avl.insert(17)
-avl.insert(15)
-avl.insert(13)
+avl.insert(10)
+avl.insert(30)
+avl.insert(5)
 avl.insert(12)
-avl.insert(18)
-
-
-
-
+avl.insert(25)
+avl.insert(35)
+avl.insert(40)
 
