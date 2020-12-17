@@ -158,6 +158,8 @@ func (bst *BinarySearchTree) checkBst(current *Node, min int, max int) bool {
 	return false
 }
 
+
+
 func (bst *BinarySearchTree) insert(value int) *BinarySearchTree {
 	if bst.root == nil {
 		node := Node{value, nil, nil}
@@ -221,7 +223,7 @@ func (bst *BinarySearchTree) delete(current *Node, value int) *Node {
 	if value < current.value {
 		current.left = bst.delete(current.left, value)
 	} else if value > current.value {
-		current.left = bst.delete(current.right, value)
+		current.right = bst.delete(current.right, value)
 	} else {
 		if current.left == nil && current.right == nil {
 			current = nil
