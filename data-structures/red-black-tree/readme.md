@@ -21,6 +21,10 @@
 * **_Deletion_**: O(log n)
 
 ## Notes
+* Every single node in the tree must be either red or black.
+* The root node of the tree must always be black.
+* Two red nodes can never appear consecutively, one after another; a red node must always be preceded by a black node (it must have a black parent node), and a red   node must always have black children nodes.
+*Every branch path — the path from a root node to an empty (null) leaf node — must pass through the exact same number of black nodes. A branch path from the root to an empty leaf node is also known as an unsuccessful search path, since it represents the path we would take if we were to search for a node that didn’t exist within the tree.
 * Refer Geeks for Geeks
 * Insertion Simplified 
     * If tree is empty create a new node and color it black
