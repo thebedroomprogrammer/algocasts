@@ -299,11 +299,11 @@ class RBTree {
         }
 
         if (returnedState !== STATE_DELETE.NONE) {
+   
 
             // case 2: Sibling black and children black
             if (returnedState === STATE_DELETE.SIBLING_BLACK_CHILDREN_BLACK) {
                 let sibling1;
-
                 if (actualDeltedNode.value === value) {
                     sibling1 = value < current.value ? current.right : current.left;
 
@@ -325,12 +325,12 @@ class RBTree {
             else if (returnedState === STATE_DELETE.SIBLING_RED) {
                 // do rotation
                 current.color = this.invert(current.color);
-                console.log(value)
-                console.log(current)
-                if (value > current.value) {
+                const valueToCompare = actualDeltedNode.value === value ? value :current.value;
+                
+                if (value > valueToCompare) {
                     current = this.rotateLeft(current)
 
-                } else if (value < current.value) {
+                } else if (value < valueToCompare) {
                     current = this.rotateRight(current)
 
                 }
@@ -452,10 +452,18 @@ rb.insert(68)
 rb.insert(80)
 rb.insert(90)
 
-rb.delete(55, rb.root)
-rb.delete(35, rb.root)
+rb.delete(90, rb.root)
+rb.delete(80, rb.root)
 rb.delete(68, rb.root)
-rb.delete(65, rb.root)
+// rb.delete(65, rb.root)
+// rb.delete(55, rb.root)
+// rb.delete(35, rb.root)
+// rb.delete(15, rb.root)
+// rb.delete(65, rb.root)
+// rb.delete(20, rb.root)
+// rb.delete(50, rb.root)
+
+
 
 // rb.delete(70, rb.root)
 // rb.delete(15, rb.root)
