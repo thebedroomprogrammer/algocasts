@@ -336,6 +336,9 @@ class RBTree {
                 }
                 current.color = this.invert(current.color);
 
+                currentState = this.getState(actualDeltedNode,sibling)
+            
+
             }//case 3: sibling black at least on children red
             else if (returnedState === STATE_DELETE.SIBLING_BLACK_CHILDREN_RED) {
 

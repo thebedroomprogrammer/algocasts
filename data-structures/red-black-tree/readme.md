@@ -29,11 +29,25 @@
 
 
 ### Insertion Rules 
-    * If tree is empty create a new node and color it black
-    * If tree is not empty create a new node and color it red
-    * If parent of new node is black then exit
-    * If parent of new node is red, then check the color of parent's sibling.
-        * If color of sibling is black or null then do suitable rotation and recolor
-        * If color of sibling is red then recolor and also check if parent's parent is not root node if not, then recolor it as well and recheck above.
-### Deletetion Rules
+* If tree is empty create a new node and color it black
+* If tree is not empty create a new node and color it red
+* If parent of new node is black then exit
+* If parent of new node is red, then check the color of parent's sibling.
+    * If color of sibling is black or null then do suitable rotation and recolor
+    * If color of sibling is red then recolor and also check if parent's parent is not root node if not, then recolor it as well and recheck above.
+### Deletetion Rules 
+* [Best Explaination](https://www.geeksforgeeks.org/red-black-tree-set-3-delete-2/)
+* Important point: Only a node with no children is deleted. 
+1) Case 1: Node to be deleted is red
+    a) Go ahead and delete the node.
+2) Case 2: If sibling of the deleted node is black and it's children are black.
+    a) Make sibling black
+    b) If parent is red make it black
+    c) if parent is black then go up a state and perform same steps on parent's sibling.
+3) Case 3: If sibling of the deleted node is black and at least one children is red.
+    a) 
+4) Case 4: If sibling is red
+    a) Swap parent and sibling color
+    b) Perform apt rotation
+    c) Reapply cases
 
