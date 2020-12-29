@@ -223,7 +223,7 @@ class RBTree {
         }
     }
 
-    delete(value, current) {
+    delete(value, current=this.root) {
         const data = this.deleteHelper(value, current, current);
         this.root = data[0]
     }
@@ -236,6 +236,7 @@ class RBTree {
         if (current === null) {
             return [current, state];
         }
+        
         if (value < current.value) {
 
             const data = this.deleteHelper(value, current.left, current.right);
@@ -250,12 +251,11 @@ class RBTree {
             current.right = data[0];
             actualDeltedNode = data[2];
 
-
         } else if (current.value === value) {
 
             if (current.left === null && current.right === null) {
                 deletedNode = current;
-                
+
                 current = null
 
             } else if (current.left === null) {
@@ -299,111 +299,175 @@ class RBTree {
         }
 
         if (returnedState !== STATE_DELETE.NONE) {
-   
 
             // case 2: Sibling black and children black
             if (returnedState === STATE_DELETE.SIBLING_BLACK_CHILDREN_BLACK) {
-                let sibling1;
-                if (actualDeltedNode.value === value) {
-                    sibling1 = value < current.value ? current.right : current.left;
-
-                } else {
-                    sibling1 = value > current.value ? current.right : current.left;
-                }
-                sibling1.color = COLOR.RED;
-
-                // case where parent made red and child black thats it
-                if (current.color === COLOR.RED) {
-                    current.color = COLOR.BLACK;
-
-                }//case where parent is already black so we make parent double black and sibling red and bubble up
-                else {
-                    currentState = this.getState(current, sibling);
-                }
+                const data = this.siblingBlackChildrenBlack(current, currentState, actualDeltedNode, value, sibling)
+                current = data[0];
+                currentState = data[1];
 
             }// case 2: sibling is red perform rotation to make sibling black
             else if (returnedState === STATE_DELETE.SIBLING_RED) {
-                // do rotation
-                current.color = this.invert(current.color);
-                const valueToCompare = actualDeltedNode.value === value ? value :current.value;
-                
-                if (value > valueToCompare) {
-                    current = this.rotateLeft(current)
-
-                } else if (value < valueToCompare) {
-                    current = this.rotateRight(current)
-
-                }
-                current.color = this.invert(current.color);
-
-                currentState = this.getState(actualDeltedNode,sibling)
-            
+                const data = this.siblingRed(current, currentState, actualDeltedNode, value)
+                current = data[0];
+                currentState = data[1];
 
             }//case 3: sibling black at least on children red
             else if (returnedState === STATE_DELETE.SIBLING_BLACK_CHILDREN_RED) {
 
-                let sibling1;
-
-                if (actualDeltedNode.value === value) {
-                    sibling1 = value < current.value ? current.right : current.left;
-
-                } else {
-                    sibling1 = value > current.value ? current.right : current.left;
-                }
-                sibling1.color = COLOR.RED;
-
-                //check for far and near child logic
-
-                // sibling is to the left of parent
-                if (value > sibling1.value) {
-                    //check if child is near
-                    if (sibling1.right.color !== COLOR.RED && sibling1.left.color === COLOR.RED) {
-
-                        const siblingColor = sibling1.color;
-                        sibling1.color = sibling1.right.color;
-                        sibling1.right.color = siblingColor
-                        current.left = this.rotateLeft(current.left);
-
-                    }
-                    //child is far
-
-                    //swap color of parent and sibling
-                    //rotate right
-                    //change color of far child to black
-
-                    const parentColor = current.color;
-                    current.color = sibling1.color;
-                    sibling1.color = parentColor;
-                    sibling1.left.color = COLOR.BLACK
-
-                    current = this.rotateRight(current);
-
-                }// sibling is to the right of parent
-                else if (value < sibling1.value) {
-                    //check if child is near
-                    if (sibling1.right.color !== COLOR.RED && sibling1.left.color === COLOR.RED) {
-                        const siblingColor = sibling1.color;
-                        sibling1.color = sibling1.left.color;
-                        sibling1.right.color = siblingColor
-                        current.right = this.rotateLeft(current.right);
-
-                    }
-                    //check if child is far
-
-                    const parentColor = current.color;
-                    current.color = sibling1.color;
-                    sibling1.color = parentColor;
-                    sibling1.right.color = COLOR.BLACK
-
-                    current = this.rotateLeft(current);
-
-                }
+                const data = this.siblingBlackChildrenRed(current, currentState, actualDeltedNode, value);
+                current = data[0];
+                currentState = data[1];
 
             }
 
         }
 
-        return [current, currentState, deletedNode]
+        return [current, currentState, deletedNode ? deletedNode : actualDeltedNode]
+    }
+
+    siblingBlackChildrenRed(current, currentState, actualDeltedNode, value) {
+        
+        let sibling1;
+
+        if (actualDeltedNode.value === value) {
+            sibling1 = value < current.value ? current.right : current.left;
+
+        } else {
+            sibling1 = value > current.value ? current.right : current.left;
+        }
+  
+
+        //check for far and near child logic
+
+        // sibling is to the left of parent
+        if (value > sibling1.value) {
+            //check if child is near
+            if (sibling1.right.color !== COLOR.RED && sibling1.left.color === COLOR.RED) {
+
+                const siblingColor = sibling1.color;
+                sibling1.color = sibling1.right.color;
+                sibling1.right.color = siblingColor
+                current.left = this.rotateLeft(current.left);
+
+            }
+            //child is far
+
+            //swap color of parent and sibling
+            //rotate right
+            //change color of far child to black
+
+            const parentColor = current.color;
+            current.color = sibling1.color;
+            sibling1.color = parentColor;
+            sibling1.left.color = COLOR.BLACK
+
+            current = this.rotateRight(current);
+
+        }// sibling is to the right of parent
+        else if (value < sibling1.value) {
+            //check if child is near
+            if (sibling1.right.color !== COLOR.RED && sibling1.left.color === COLOR.RED) {
+                const siblingColor = sibling1.color;
+                sibling1.color = sibling1.left.color;
+                sibling1.right.color = siblingColor
+                current.right = this.rotateLeft(current.right);
+
+            }
+            //check if child is far
+
+            const parentColor = current.color;
+            current.color = sibling1.color;
+            sibling1.color = parentColor;
+            sibling1.right.color = COLOR.BLACK
+
+            current = this.rotateLeft(current);
+
+        }
+        console.log(current,currentState)
+        return [current, currentState]
+    }
+
+    siblingRed(current, currentState, actualDeltedNode, value) {
+        // do rotation
+        current.color = this.invert(current.color);
+        let sibling;
+        let newCurrent;
+        //comparision must be made always to the cureent value
+        // always compare actual deleted nodes value.
+
+        const valueToCompare = actualDeltedNode.value === value ? value : actualDeltedNode.value;
+
+        if (valueToCompare < current.value) {
+            current = this.rotateLeft(current)
+
+        } else if (valueToCompare > current.value) {
+            current = this.rotateRight(current)
+
+        }
+        current.color = this.invert(current.color);
+        if (valueToCompare < current.value) {
+            currentState = this.getState(actualDeltedNode, current.left.right);
+            sibling = current.left.right;
+            newCurrent = current.left;
+
+        } else if (valueToCompare > current.value) {
+            currentState = this.getState(actualDeltedNode, current.right.left)
+            sibling = current.right.left;
+            newCurrent = current.right;
+
+        }
+
+        if (currentState === STATE_DELETE.SIBLING_BLACK_CHILDREN_BLACK) {
+            const data = this.siblingBlackChildrenBlack(newCurrent, currentState, actualDeltedNode, value, sibling)
+            currentState = data[1];
+
+            if (valueToCompare < current.value) {
+                current.left.right = data[0]
+
+            } else if (valueToCompare > current.value) {
+
+                current.right.left = data[0]
+
+            }
+        } else if (currentState === STATE_DELETE.SIBLING_BLACK_CHILDREN_RED) {
+            const data = this.siblingBlackChildrenRed(newCurrent, currentState, actualDeltedNode, value)
+            currentState = data[1];
+            if (valueToCompare < current.value) {
+                current.left.right = data[0]
+
+            } else if (valueToCompare > current.value) {
+
+                current.right.left = data[0]
+
+            }
+        }
+        console.log(current,currentState)
+
+        return [current, currentState]
+    }
+
+    siblingBlackChildrenBlack(current, currentState, actualDeltedNode, value, sibling) {
+        let sibling1;
+        if (actualDeltedNode.value === value) {
+            sibling1 = value < current.value ? current.right : current.left;
+
+        } else {
+            sibling1 = value > current.value ? current.right : current.left;
+        }
+        sibling1.color = COLOR.RED;
+
+        // case where parent made red and child black thats it
+        if (current.color === COLOR.RED) {
+            current.color = COLOR.BLACK;
+
+        }//case where parent is already black so we make parent double black and sibling red and bubble up
+        else {
+            currentState = this.getState(current, sibling);
+        }
+        console.log(current,currentState)
+
+        return [current, currentState]
     }
 
     getState(node, sibling) {
@@ -423,56 +487,33 @@ class RBTree {
 }
 
 var rb = new RBTree();
-// rb.insert(10)
-// rb.insert(18)
-// rb.insert(7)
-// rb.insert(15)
-// rb.insert(16)
-// rb.insert(30)
-// rb.insert(25)
-// rb.insert(40)
-// rb.insert(60)
-// rb.insert(2)
-// rb.insert(1)
-// rb.insert(70)
 
-// rb.delete(70, rb.root)
-// rb.delete(60, rb.root)
-// rb.delete(30, rb.root)
-// rb.delete(40, rb.root)
-// rb.delete(15, rb.root)
-// rb.delete(18, rb.root)
-// rb.delete(16, rb.root)
 
-rb.insert(50)
-rb.insert(20)
-rb.insert(65)
-rb.insert(15)
-rb.insert(35)
+rb.insert(11)
+rb.insert(22)
+rb.insert(1)
+rb.insert(100)
 rb.insert(55)
-rb.insert(70)
-rb.insert(68)
-rb.insert(80)
-rb.insert(90)
+rb.insert(43)
+rb.insert(34)
+rb.insert(56)
+rb.insert(76)
+rb.insert(87)
 
-rb.delete(90, rb.root)
-rb.delete(80, rb.root)
-rb.delete(68, rb.root)
-// rb.delete(65, rb.root)
-// rb.delete(55, rb.root)
-// rb.delete(35, rb.root)
-// rb.delete(15, rb.root)
-// rb.delete(65, rb.root)
-// rb.delete(20, rb.root)
-// rb.delete(50, rb.root)
+rb.insert(32)
+rb.insert(66)
+rb.insert(21)
+rb.insert(26)
+rb.insert(84)
+rb.insert(99)
+rb.insert(69)
+rb.insert(91)
+rb.insert(35)
 
 
+rb.delete(34)
+rb.delete(56)
+rb.delete(22)
+rb.delete(32)
 
-// rb.delete(70, rb.root)
-// rb.delete(15, rb.root)
-// rb.delete(18, rb.root)
-// rb.delete(16, rb.root)
 
-// rb.delete(1, rb.root)
-
-// 10,18,7,15,16,30,25,40,60,2,1,70
