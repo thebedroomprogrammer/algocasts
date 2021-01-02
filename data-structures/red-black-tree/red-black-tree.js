@@ -489,6 +489,7 @@ class RBTree {
 var rb = new RBTree();
 
 
+
 rb.insert(11)
 rb.insert(22)
 rb.insert(1)
@@ -499,7 +500,6 @@ rb.insert(34)
 rb.insert(56)
 rb.insert(76)
 rb.insert(87)
-
 rb.insert(32)
 rb.insert(66)
 rb.insert(21)
@@ -510,10 +510,10 @@ rb.insert(69)
 rb.insert(91)
 rb.insert(35)
 
-
 rb.delete(34)
 rb.delete(56)
 rb.delete(22)
 rb.delete(32)
+rb.levelOrderTraversal()
 
 

@@ -105,21 +105,20 @@ func (avlt *AVLTree) rotateRight(current *Node) *Node {
 	pivot := current.left
 	temp := pivot.right
 	pivot.right = current
-	current.left=temp
+	current.left = temp
 	return pivot
 
 }
-
 
 func (avlt *AVLTree) rotateLeft(current *Node) *Node {
 	pivot := current.right
 	temp := pivot.left
 	pivot.right = current
-	current.right=temp
+	current.right = temp
 	return pivot
 }
 
-func (avlt *AVLTree) getBalanceFactor(current *Node) float64  {
+func (avlt *AVLTree) getBalanceFactor(current *Node) float64 {
 	return avlt.height(current.left) - avlt.height(current.right)
 }
 
@@ -131,9 +130,9 @@ func (avlt *AVLTree) insert(value int) {
 func (avlt *AVLTree) insertHelper(current *Node, node *Node) *Node {
 	if current == nil {
 		current = node
-	}else if node.value <= current.value {
-		current.left = avlt.insertHelper(current.left,node)
-		if current.left != nil && avlt.getBalanceFactor(current) > 1{
+	} else if node.value <= current.value {
+		current.left = avlt.insertHelper(current.left, node)
+		if current.left != nil && avlt.getBalanceFactor(current) > 1 {
 			if node.value > current.left.value {
 				current = avlt.rotateRight(current)
 				current = avlt.rotateLeft(current)
@@ -141,11 +140,11 @@ func (avlt *AVLTree) insertHelper(current *Node, node *Node) *Node {
 				current = avlt.rotateRight(current)
 			}
 		}
-	}else if node.value > current.value {
-		current.right = avlt.insertHelper(current.right,node)
+	} else if node.value > current.value {
+		current.right = avlt.insertHelper(current.right, node)
 		if current.right != nil && avlt.getBalanceFactor(current) > 1 {
 			if node.value > current.right.value {
-				current = avlt.rotateLeft(current);
+				current = avlt.rotateLeft(current)
 			} else {
 				current = avlt.rotateLeft(current)
 				current = avlt.rotateRight(current)
@@ -182,8 +181,8 @@ func (avlt *AVLTree) insertHelper(current *Node, node *Node) *Node {
 	// 	}
 	// }
 }
-func (avlt *AVLTree) delete(value int)  {
-	avlt.root = avlt.deleteHelper(avlt.root,value)
+func (avlt *AVLTree) delete(value int) {
+	avlt.root = avlt.deleteHelper(avlt.root, value)
 }
 func (avlt *AVLTree) deleteHelper(current *Node, value int) *Node {
 	if current == nil {
@@ -206,8 +205,8 @@ func (avlt *AVLTree) deleteHelper(current *Node, value int) *Node {
 		}
 	}
 
-	if current!= nil {
-		 balanceFactor := avlt.getBalanceFactor(current)
+	if current != nil {
+		balanceFactor := avlt.getBalanceFactor(current)
 
 		if balanceFactor > 1 && avlt.getBalanceFactor(current.left) >= 0 {
 			current = avlt.rotateRight(current)
@@ -229,10 +228,14 @@ func (avlt *AVLTree) deleteHelper(current *Node, value int) *Node {
 
 func main() {
 	avlt := AVLTree{nil}
-	avlt.insert(30)
+	avlt.insert(20)
 	avlt.insert(10)
+	avlt.insert(30)
 	avlt.insert(5)
-	avlt.insert(3)
-	avlt.delete(30)
+	avlt.insert(12)
+	avlt.insert(25)
+	avlt.insert(35)
+	avlt.insert(40)
+	// avlt.delete(30)
 	avlt.levelOrderTraversal()
 }
